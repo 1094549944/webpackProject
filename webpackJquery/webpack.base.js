@@ -11,15 +11,11 @@ let UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   devServer: {
-    disableHostCheck: true,
     contentBase: path.resolve(__dirname, 'dist'),
     host: 'localhost',
-    hot: true, // 启用热更新
-    overlay: false,
     compress: true,
     progress: true,
     port: 9090,
-    inline: true,
     proxy: {
       '**/*.do': {
         target: 'http://test.happymmall.com/',
@@ -32,7 +28,7 @@ module.exports = {
     about: __dirname + '/views/about/index.js'
   },
   output: {
-    filename: '[name].[hash:8].js',
+    filename: '[name][hash:8].js',
     path: path.resolve(__dirname, 'dist')
   },
   module: {
@@ -180,7 +176,19 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: path.join(__dirname, '/views/index.html'),
+      inject: true,
+      minify: {
+        // 去除双引号
+        removeAttributeQuotes: true,
+        // 是否去除空格
+        collapseWhitespace: true
+      },
+      // 添加hash 时间戳
+      hash: true
+    }),
     new HtmlWebpackBannerPlugin({
       banner: '2019 maker by jiaxinying'
     }),

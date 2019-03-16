@@ -1,2 +1,2 @@
-let commont = require('../../public/middleware/common')
+let common = require('../../public/middleware/common')
 console.log('common', common)
